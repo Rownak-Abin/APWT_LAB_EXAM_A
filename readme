@@ -1,11 +1,11 @@
-1. admin can add employee
-2. admin can edit employee
-3. admin can delete employee
+1. admin can add employee        //->'/create', 'homeController@create'
+2. admin can edit employee      //->/user/edit/{id}', 'homeController@edit'
+3. admin can delete employee    //-> /delete/{id}', 'homeController@destroy'
 
-4. Employee can add product
-5. Employee can edit product
-6. Employee can delete product
+4. Employee can add product     //-> /ProductCreate', 'ProductController@create'
+5. Employee can edit product    //-> /products/edit/{id}', 'ProductController@edit'
+6. Employee can delete product   //-> /deleteProduct/{id}', 'ProductController@destroyProduct'
 
-7. All the post requests are validated.
+7. All the post requests are validated. 
 8. Session is fully applied.
 9. All the views are created including login & registration.
