@@ -21,6 +21,8 @@ Route::post('/login', 'loginController@verify');
 Route::get('/logout', 'logoutController@index');
 
 
+
+
 Route::group(['middleware'=>['sess']], function(){
 
 	Route::get('/home', 'homeController@index')->middleware('sess')->name('home.index');
@@ -36,9 +38,18 @@ Route::group(['middleware'=>['sess']], function(){
 		Route::post('/user/edit/{id}', 'homeController@update');
 		Route::get('/delete/{id}', 'homeController@deleted');
 		Route::post('/delete/{id}', 'homeController@destroy');
-	
 
-	
+
+		Route::get('/employee', 'ProductController@index')->name('employee.index');
+		Route::get('/ProductCreate', 'ProductController@create')->name('product.create');
+		Route::post('/ProductCreate', 'ProductController@ProductStore');
+		Route::get('/ProductList', 'ProductController@ProductList')->name('product.ProductList');
+		Route::get('/products/edit/{id}', 'ProductController@edit')->name('product.edit');
+		Route::post('/products/edit/{id}', 'ProductController@updateProduct');
+		Route::get('/deleteProduct/{id}', 'ProductController@productDeleted');
+		Route::post('/deleteProduct/{id}', 'ProductController@destroyProduct');
+
+
 });
 
 //Route::resource('/product', 'ProductController');
