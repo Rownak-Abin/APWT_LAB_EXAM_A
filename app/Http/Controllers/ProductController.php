@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
+use Validator;
+use App\pro;
+
 
 class ProductController extends Controller
 {
@@ -12,8 +15,13 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $req)
     {
+
+
+       
+        return view('employee.index');
+        
         //
     }
 
@@ -24,7 +32,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+         return view('employee.createProduct');
     }
 
     /**
@@ -33,9 +41,29 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function ProductStore(Request $req)
     {
-        //
+
+
+             $this->validate($req, [
+                'pname' => 'required|min:3',
+                'quantity'=> 'required',
+                'price' => 'required'
+            ])->validate();
+
+       
+                $pro = new pro();
+                $pro->pname          = $req->pname;
+                $pro->quantity       = $req->quantity;
+                $pro->price          = $req->price;
+               
+              
+                if($pro->save()){
+                    //return redirect()->route('admin.userlist');
+                      return view('employee.index');
+                }else{
+                    return back();
+                }
     }
 
     /**
@@ -44,9 +72,10 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function ProductList()
     {
-        //
+          $Products  = pro::all();
+        return view('employee.ProductList')->with('pros', $Products);
     }
 
     /**
@@ -55,9 +84,10 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $Products = pro::find($id);       
+        return view('employee.ProductEdit', $Products);
     }
 
     /**
@@ -67,9 +97,20 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function updateProduct($id, Request $req)
     {
-        //
+         $pro = pro::find($id); 
+        $pro->pname     = $req->pname;
+        $pro->quantity     = $req->quantity;
+        $pro->price         = $req->price;
+        $pro->save();
+
+        return view('employee.index');
+    }
+
+     public function productDeleted($id){
+        $pro = pro::find($id);       
+        return view('employee.deleteProduct')/*->with('user', $user)*/;
     }
 
     /**
@@ -78,8 +119,11 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroyProduct($id)
     {
-        //
+         $pro = pro::find($id) -> delete();
+
+         //return redirect()->route('employee.ProductEdit');
+          return view('employee.index');
     }
 }

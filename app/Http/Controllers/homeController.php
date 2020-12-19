@@ -78,9 +78,6 @@ class homeController extends Controller
     public function destroy($id){
         $user = User::find($id) -> delete();
 
-      
-
-
          return redirect()->route('admin.userlist');
     }
 
